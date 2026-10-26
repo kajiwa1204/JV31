@@ -1,0 +1,1 @@
+rootProject.name = "0717_1_inheritance"

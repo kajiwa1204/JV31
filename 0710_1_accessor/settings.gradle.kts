@@ -1,0 +1,1 @@
+rootProject.name = "0710_1_accessor"

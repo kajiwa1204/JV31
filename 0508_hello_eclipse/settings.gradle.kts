@@ -1,0 +1,1 @@
+rootProject.name = "0508_hello_eclipse"

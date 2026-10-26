@@ -1,0 +1,1 @@
+rootProject.name = "0925_2_Collection"

@@ -1,0 +1,1 @@
+rootProject.name = "JV31_kadai03"

@@ -1,0 +1,1 @@
+rootProject.name = "0515_String"

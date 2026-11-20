@@ -51,7 +51,7 @@ public class Main {
         System.out.println(oie.isPresent());
 
         // getは空の場合、例外が発生する。
-        System.out.println(oie.getAsInt());
+        // System.out.println(oie.getAsInt());
 
         // よって、存在チェックが必要となる。
         if (oi.isPresent()) {
@@ -65,6 +65,19 @@ public class Main {
 
         // 存在しない場合、既定値が用いられる。
         System.out.println(oie.orElse(0));
+
+        // 存在する場合の｢処理｣の指定。
+        oi.ifPresent(System.out::println);
+
+        // 存在しない場合は何も起きない。
+        oie.ifPresent(System.out::println);
+
+        // 存在しない場合を考慮した、｢処理｣の指定。
+        oi.ifPresentOrElse(System.out::println, () -> System.out.println("空"));
+
+        // 存在しない場合、
+        // 第2引数の｢処理｣が行われる。
+        oie.ifPresentOrElse(System.out::println, () -> System.out.println("空"));
 
         // 参照型は、ジェネリクスで。
         Optional<String> os = Optional.of("abc");

@@ -4,6 +4,7 @@ package com.kajiwa1204.jv31;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -164,6 +165,19 @@ public class Main {
 
         System.out.println("---");
 
+        // その7 〜加工と型変換 map〜
+        names.stream()
+                .map(name -> name + "さん")
+                .forEach(System.out::println);
+
+        // Integer → String のストリームに変換。
+        scores.stream()
+                .map(score -> score + "点")
+                .filter(score -> score.startsWith("2"))
+                .forEach(System.out::println);
+
+        System.out.println("---");
+
         // 中間処理は複数可能
         scores.stream()
                 .distinct()
@@ -194,45 +208,31 @@ public class Main {
         // true/falseが返ってくる。
 
         // anyMatch...いずれかがマッチ→true
-        System.out.println(
-                scores.stream()
-                        .anyMatch(s -> s == 20)
-        );
+        System.out.println(scores.stream()
+                .anyMatch(s -> s == 20));
 
-        System.out.println(
-                scores.stream()
-                        .anyMatch(s -> s == 40)
-        );
+        System.out.println(scores.stream()
+                .anyMatch(s -> s == 40));
 
         // allMatch...全てがマッチ→true
-        System.out.println(
-                scores.stream()
-                        .allMatch(s -> 10 <= s)
-        );
+        System.out.println(scores.stream()
+                .allMatch(s -> 10 <= s));
 
-        System.out.println(
-                scores.stream()
-                        .allMatch(s -> 10 < s)
-        );
+        System.out.println(scores.stream()
+                .allMatch(s -> 10 < s));
 
         // noneMatch...全てがマッチしない→true
-        System.out.println(
-                scores.stream()
-                        .noneMatch(s -> s < 10)
-        );
+        System.out.println(scores.stream()
+                .noneMatch(s -> s < 10));
 
-        System.out.println(
-                scores.stream()
-                        .noneMatch(s -> s <= 10)
-        );
+        System.out.println(scores.stream()
+                .noneMatch(s -> s <= 10));
 
         // その4 〜最初の1つを取得 findFirst〜
-        System.out.println(
-                names.stream()
-                        .filter(name -> name.startsWith("b"))
-                        .findFirst()
-                        .orElse("Not found")
-        );
+        System.out.println(names.stream()
+                .filter(name -> name.startsWith("b"))
+                .findFirst()
+                .orElse("Not found"));
 
         // その5 〜任意式による集約 reduce〜
 
@@ -244,23 +244,51 @@ public class Main {
         System.out.println(sum);  // 95
 
         // 既存の知識では、以下で実現可能。
-        System.out.println(
-                scores.stream()
-                        .mapToInt(s -> s)
-                        .sum()
-        );
+        System.out.println(scores.stream()
+                .mapToInt(s -> s)
+                .sum());
 
         // これを reduce で書くと。
-        System.out.println(
-            scores.stream()
-                    .reduce(0, (sum2, score) -> sum2 + score)
-        );
+        System.out.println(scores.stream()
+                .reduce(0, (sum2, score) -> sum2 + score));
         // 第1引数はsumの初期値。
 
         // 全部10倍にして合算とか。
-        System.out.println(
-                scores.stream()
-                        .reduce(0, (sum2, score) -> sum2 + score * 10)
-        );
+        System.out.println(scores.stream()
+                .reduce(0, (sum2, score) -> sum2 + score * 10));
+
+        // 他にも、階乗(factorial)で、すべて掛けるとか。
+        List<Integer> data = List.of(1, 2, 3, 4, 5);
+        System.out.println(data.stream()
+                .reduce(1, (fact, v) -> fact * v));
+
+        // MapによるStreamの紹介
+        // そのままでは呼べないので、
+        // keySet(), values(), entrySet()を経由して
+        // ストリームに変換する。
+        Map<String, Integer> ages = Map.of("a", 21, "b", 22, "c", 23);
+
+        // キー（Key）だけをストリームに流す場合
+        ages.keySet()
+                .stream()
+                .forEach(System.out::println);
+
+        // 値（Value）だけをストリームに流す場合
+        ages.values()
+                .stream()
+                .forEach(System.out::println);
+
+        // キーと値をセット(エントリー)で処理したい場合。
+        ages.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(entry -> System.out.printf("%s さん: %d歳%n", entry.getKey(), entry.getValue()));
+
+        // 最後に
+        // Stream APIによる関数型スタイルは、
+        // Javaだけでなく、Scala、Kotlin、Rust、F#などでも
+        // 採用されています。
+        // バグが起きにくく、並行処理（マルチコアCPUでの同時処理）に強く、
+        // コードが圧倒的に読みやすくなる といったメリットがあるので、是非ものにしましょう！
     }
 }
